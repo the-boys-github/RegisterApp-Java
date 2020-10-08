@@ -34,7 +34,7 @@ public class EmployeeSignInCommand implements VoidCommandInterface {
             if(!pass.equals(dataPass))
                 throw new UnauthorizedException();
 		} else {
-			throw new NotFoundException("Product");
+			throw new NotFoundException("Employee");
         }
 
         this.createActiveUserEntity(employeeEntity);
