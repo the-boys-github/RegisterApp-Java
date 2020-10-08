@@ -44,6 +44,7 @@ public class EmployeeSignInCommand implements VoidCommandInterface {
     
     @Transactional
 	private ActiveUserEntity createActiveUserEntity(Optional<EmployeeEntity> employeeEntity) {
+	    System.out.println(employeeEntity.get());
         Optional<ActiveUserEntity> queriedActiveUserEntity =
         this.activeUserRepository
             .findByEmployeeId(employeeEntity.get().getId());
@@ -94,6 +95,8 @@ public class EmployeeSignInCommand implements VoidCommandInterface {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
 	private ActiveUserRepository activeUserRepository;
 
 }
