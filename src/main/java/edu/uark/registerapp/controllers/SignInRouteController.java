@@ -4,9 +4,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,7 +51,7 @@ public class SignInRouteController extends BaseRouteController {
 			.setSessionKey(request.getSession().getId())
 			.execute();
 		} catch (final Exception e) {
-			return this.buildInvalidSessionResponse();
+			return new ModelAndView(ViewNames.SIGN_IN.getViewName(), new ModelMap().addAttribute(ViewModelNames.ERROR_MESSAGE.getValue(), e.getMessage()));
 		}
 
 		return new ModelAndView(
