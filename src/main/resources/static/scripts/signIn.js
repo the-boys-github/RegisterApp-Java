@@ -9,7 +9,7 @@ function validateForm() {
     let passIsNotEmpty = document.getElementById('pass-input').value.length > 0;
 
     if(idIsNotEmpty && passIsNotEmpty && isANumber(document.getElementById('id-input').value)){
-        let errors = document.getElementByClassName('invalid-input');
+        let errors = document.getElementsByClassName('invalid-input');
         errors[0].style.display= "none";
         errors[1].style.display = "none";
         return true;
