@@ -4,5 +4,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 function validateForm() {
 	// TODO: Validate the user input
-	return true;
+    let idIsNotEmpty = document.getElementById('id-input').value.length > 0;
+
+    let passIsNotEmpty = document.getElementById('pass-input').value.length > 0;
+
+    return  idIsNotEmpty && passIsNotEmpty && isANumber(document.getElementById('id-input').value);
+}
+
+function isANumber(str) {
+    return !isNaN(str) && !isNaN(parseFloat(str))
 }
