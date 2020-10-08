@@ -187,3 +187,8 @@ table.hidden, tr.hidden, th.hidden, td.hidden {
 	color: #607D8B!important;
 }
 /* End product saved alert modal */
+
+/* Sign In error messages*/
+.no-display{
+    display: none;
+}

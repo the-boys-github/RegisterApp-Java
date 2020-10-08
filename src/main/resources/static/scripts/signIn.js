@@ -8,7 +8,21 @@ function validateForm() {
 
     let passIsNotEmpty = document.getElementById('pass-input').value.length > 0;
 
-    return  idIsNotEmpty && passIsNotEmpty && isANumber(document.getElementById('id-input').value);
+    if(idIsNotEmpty && passIsNotEmpty && isANumber(document.getElementById('id-input').value)){
+        let errors = document.getElementByClassName('invalid-input');
+        errors[0].style.display= "none";
+        errors[1].style.display = "none";
+        return true;
+    }
+    else{
+        if(!idIsNotEmpty){
+            document.getElementById('blank-employeeId-error').style = "block";
+        }
+        if(!passIsNotEmpty){
+            document.getElementById('blank-pass-error').style = "block";
+        }
+        return false;
+    }
 }
 
 function isANumber(str) {
