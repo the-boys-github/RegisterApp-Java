@@ -7,12 +7,14 @@ import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.entities.EmployeeEntity;
 import edu.uark.registerapp.models.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class EmployeeUpdateCommand implements ResultCommandInterface<Employee> {
     UUID employeeId;
     Employee employee;

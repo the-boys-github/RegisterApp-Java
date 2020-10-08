@@ -6,7 +6,9 @@ import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.entities.EmployeeEntity;
 import edu.uark.registerapp.models.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EmployeeCreateCommand implements ResultCommandInterface<Employee> {
     Employee employee;
     boolean isInitialEmployee;

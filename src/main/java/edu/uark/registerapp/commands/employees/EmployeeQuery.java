@@ -6,10 +6,12 @@ import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.entities.EmployeeEntity;
 import edu.uark.registerapp.models.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class EmployeeQuery implements ResultCommandInterface<Employee> {
     @Autowired
     EmployeeRepository employeeRepository;
@@ -31,8 +33,9 @@ public class EmployeeQuery implements ResultCommandInterface<Employee> {
         return id;
     }
 
-    public void setId(UUID id) {
+    public EmployeeQuery setId(UUID id) {
         this.id = id;
+        return this;
     }
 
 }
