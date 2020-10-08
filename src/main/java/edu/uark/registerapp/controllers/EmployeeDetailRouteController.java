@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +33,25 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 		// TODO: Logic to determine if the user associated with the current session
 		//  is able to create an employee
 
-		return new ModelAndView(ViewModelNames.EMPLOYEE_TYPES.getValue());
+
+		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
+		if(!activeUserEntity.isPresent()){
+			ModelMap model = new ModelMap();
+			model.addAttribute(ViewModelNames.ERROR_MESSAGE.getValue(), "Session not active");
+			ModelMap redirectModel = new ModelMap();
+			redirectModel.addAttribute("redirectionAttribute", model);
+			ModelAndView modelAndView = new ModelAndView(REDIRECT_PREPEND.concat("/"), model);
+			return modelAndView;
+		}
+		else {
+			ModelAndView modelAndView = new ModelAndView(ViewNames.PRODUCT_LISTING.getViewName());
+			modelAndView.addObject(ViewModelNames.ERROR_MESSAGE.getValue(), "No Employee ID provided");
+			return modelAndView;
+		}
+
+
+
+//		return new ModelAndView(ViewModelNames.EMPLOYEE_TYPES.getValue());
 	}
 
 	@RequestMapping(value = "/{employeeId}", method = RequestMethod.GET)
