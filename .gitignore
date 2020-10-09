@@ -6,5 +6,6 @@ mvnw
 mvnw.cmd
 target/
 
-.idea/
+# IntelliJ files
+.idea
 registerapp.iml
