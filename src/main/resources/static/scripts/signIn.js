@@ -3,26 +3,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 function validateForm() {
-	// TODO: Validate the user input
-    let idIsNotEmpty = document.getElementById('id-input').value.length > 0;
+	if (empID.value === undefined || empID.value === "") {
+		displayError("The id is not valid because it is blank");
+		return false;
+	}
 
-    let passIsNotEmpty = document.getElementById('pass-input').value.length > 0;
+	if (isNaN(empID.value)) {
+		displayError("The id is not valid because it is not at number");
+		return false;
+	}
 
-    if(idIsNotEmpty && passIsNotEmpty && isANumber(document.getElementById('id-input').value)){
-        let errors = document.getElementsByClassName('invalid-input');
-        errors[0].style.display= "none";
-        errors[1].style.display = "none";
-        return true;
-    }
-    else{
-        if(!idIsNotEmpty){
-            document.getElementById('blank-employeeId-error').style = "block";
-        }
-        if(!passIsNotEmpty){
-            document.getElementById('blank-pass-error').style = "block";
-        }
-        return false;
-    }
+	if (pass.value === undefined || pass.value === "") {
+		displayError("The password is not valid because it is blank");
+		return false;
+	}
+	return true;
 }
 
 function isANumber(str) {
