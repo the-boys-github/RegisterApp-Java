@@ -3,6 +3,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 function validateForm() {
+    //head//
+
+    if (employeeId.value === undefined || employeeId.value === "") {
+        displayError("The id is not valid because it is blank");
+    }
+
+    if (isNaN(employeeId.value)) {
+        displayError("The id is not valid because it is not at number");
+    }
+
+    if (password.value === undefined || password.value === "") {
+        displayError("The password is not valid because it is blank");
+    }
+
 	// TODO: Validate the user input
     let idIsNotEmpty = document.getElementById('id-input').value.length > 0;
 
