@@ -44,7 +44,7 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 			activeEmployeeExistsQuery.execute();
 
 		} catch (Exception e){
-			return new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName(), new ModelMap().addAttribute(ViewModelNames.ERROR_MESSAGE.getValue(), e.getMessage()));
+			return new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName(), new ModelMap().addAttribute(ViewModelNames.ERROR_MESSAGE.getValue(), e.getMessage())).addObject("employee", new Employee());
 		}
 
 		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
