@@ -19,8 +19,12 @@ public class ProductQuery implements ResultCommandInterface<Product> {
 		final Optional<ProductEntity> productEntity =
 			this.productRepository.findById(this.productId);
 		if (productEntity.isPresent()) {
+			System.out.println("product present");
+			System.out.println(productEntity.get().getLookupCode());
+			System.out.println(new Product(productEntity.get()).getLookupCode());
 			return new Product(productEntity.get());
 		} else {
+			System.out.println("product not found");
 			throw new NotFoundException("Product");
 		}
 	}
