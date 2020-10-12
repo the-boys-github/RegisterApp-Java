@@ -34,19 +34,15 @@
 					<tr>
 						<td class="label">Lookup Code:</td>
 						<td>
-							<div th:switch="${isElevatedUser}">
-								<input id="productLookupCode" type="text" th:value="${!product.isEmpty} ? ${product.lookupCode} : ''" class="update" th:case="'true'"/>
-								<input id="productLookupCode" type="text" th:value="${!product.isEmpty} ? ${product.lookupCode} : ''" class="update" th:case="*" disabled/>
-							</div>
+								<input id="productLookupCode" type="text" th:value="${!product.isEmpty} ? ${product.lookupCode} : ''" class="update" th:if="${isElevatedUser}"/>
+								<input id="productLookupCode" type="text" th:value="${!product.isEmpty} ? ${product.lookupCode} : ''" class="update" th:if="${!isElevatedUser}" disabled/>
 						</td>
 					</tr>
 					<tr>
 						<td class="label">Count:</td>
 						<td>
-							<div th:switch="${isElevatedUser}">
-								<input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" th:case="'true'"/>
-								<input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" th:case="*" disabled/>
-							</div>
+								<input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" th:if="${isElevatedUser}"/>
+								<input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" th:if="${!isElevatedUser}" disabled/>
 						</td>
 					</tr>
 				</tbody>
