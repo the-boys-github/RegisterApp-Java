@@ -1,8 +1,8 @@
 package edu.uark.registerapp.commands.employees.helpers;
 
+import java.util.Arrays;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import edu.uark.registerapp.models.entities.ActiveUserEntity;
 import edu.uark.registerapp.models.repositories.ActiveUserRepository;
 import edu.uark.registerapp.models.entities.EmployeeEntity;
 import edu.uark.registerapp.models.repositories.EmployeeRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -26,15 +27,15 @@ public class EmployeeSignInCommand implements VoidCommandInterface {
 		this.validateProperties();
         
 
-        final Optional<EmployeeEntity> employeeEntity =
+        Optional<EmployeeEntity> employeeEntity =
         this.employeeRepository.findByEmployeeId(Integer.valueOf(employeeSignIn.getEmployeeId()));
         byte[] pass = this.employeeSignIn.getPassword().getBytes();
         if (employeeEntity.isPresent()) {
             byte[] dataPass = employeeEntity.get().getPassword();
-            if(!pass.equals(dataPass))
+            if(!Arrays.equals(dataPass, pass))
                 throw new UnauthorizedException();
 		} else {
-			throw new NotFoundException("Product");
+			throw new NotFoundException("Employee");
         }
 
         this.createActiveUserEntity(employeeEntity);
@@ -42,9 +43,9 @@ public class EmployeeSignInCommand implements VoidCommandInterface {
     }
     
     @Transactional
-	private ActiveUserEntity createActiveUserEntity(final Optional<EmployeeEntity> employeeEntity) {
-
-        final Optional<ActiveUserEntity> queriedActiveUserEntity = 
+	private ActiveUserEntity createActiveUserEntity(Optional<EmployeeEntity> employeeEntity) {
+	    System.out.println(employeeEntity.get());
+        Optional<ActiveUserEntity> queriedActiveUserEntity =
         this.activeUserRepository
             .findByEmployeeId(employeeEntity.get().getId());
 
@@ -94,6 +95,8 @@ public class EmployeeSignInCommand implements VoidCommandInterface {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
 	private ActiveUserRepository activeUserRepository;
 
 }
