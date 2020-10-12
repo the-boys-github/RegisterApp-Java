@@ -4,7 +4,7 @@
 	<title>Register - Main Menu</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
-	<link rel="stylesheet" type="text/css" href="/styles/master.css">
+    <link rel="stylesheet" type="text/css" href="/styles/master.css">
 
 	<script type="text/javascript" src="/scripts/master.js" defer></script>
 	<script type="text/javascript" src="/scripts/mainMenu.js" defer></script>
@@ -21,7 +21,20 @@
 			<h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
 		</div>
 
-		<!-- TODO: Add the various action button elements -->
+        <!-- TODO: Add the various action button elements -->
+        <button type="button" id="startTransactionButton" class="action">Start Transaction</button>
+        <br /><br />
+        <button type="button" id="viewProductsButton" class="action">View Products</button>
+        <br /><br />
+        
+        <div id="managerButtons" th:class="${isElevatedUser} ? '' : hidden">
+            <button type="button" id="createEmployeeButton" class="action">Create Employee</button>
+            <br /><br />
+            <button type="button" id="salesReportButton" class="action">Sales Report</button>
+            <br /><br />
+            <button type="button" id="cashierReportButton" class="action">Cashier Report</button>
+            <br /><br />
+        </div>
 	</div>
 
 	<div class="hidden">
@@ -41,7 +54,7 @@
 	</div>
 
 	<div class="footer">
-		<img id="signOutImage" src="/images/Sign-Out.png" alt="Sign Out" class="footer" />
+		<img id="signOutImage" src="Sign-Out.png" alt="Sign Out" class="footer" />
 	</div>
 		
 </body>
