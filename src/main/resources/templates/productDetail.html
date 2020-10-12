@@ -34,13 +34,15 @@
 					<tr>
 						<td class="label">Lookup Code:</td>
 						<td>
-							<input id="productLookupCode" type="text" th:value="${!product.isEmpty} ? ${product.lookupCode} : ''" class="update" />
+								<input id="productLookupCode" type="text" th:value="${!product.isEmpty} ? ${product.lookupCode} : ''" class="update" th:if="${isElevatedUser}"/>
+								<input id="productLookupCode" type="text" th:value="${!product.isEmpty} ? ${product.lookupCode} : ''" class="update" th:if="${!isElevatedUser}" disabled/>
 						</td>
 					</tr>
 					<tr>
 						<td class="label">Count:</td>
 						<td>
-							<input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" />
+								<input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" th:if="${isElevatedUser}"/>
+								<input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" th:if="${!isElevatedUser}" disabled/>
 						</td>
 					</tr>
 				</tbody>
@@ -49,12 +51,14 @@
 
 		<div class="productActionsWrapper">
 			<br />
-			<div id="deleteActionContainer" th:class="${product.isEmpty} ? hidden : ''">
+			<div id="deleteActionContainer" th:class="${product.isEmpty} or ${!isElevatedUser} ? hidden : ''">
 				<button id="deleteButton" type="button" class="action">Delete</button>
 				<br />
 				<br />
 			</div>
-			<button id="saveButton" type="button" class="action">Save</button>
+			<div th:class="${!isElevatedUser} ? hidden : ''">
+				<button id="saveButton" type="button" class="action">Save</button>
+			</div>
 		</div>
 
 		<div id="productSavedAlertModal" class="modal animate-opacity-show">
