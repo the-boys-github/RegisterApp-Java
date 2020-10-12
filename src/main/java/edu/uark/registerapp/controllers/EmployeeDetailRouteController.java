@@ -82,10 +82,11 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 		return new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName(), new ModelMap("employee", employeeFound));
 
 	}
-
+/*
 	// Helper methods
 	private boolean activeUserExists() {
 		// TODO: Helper method to determine if any active users Exist
 		return true;
 	}
+	*/
 }

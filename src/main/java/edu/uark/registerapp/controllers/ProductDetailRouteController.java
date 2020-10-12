@@ -52,7 +52,7 @@ public class ProductDetailRouteController extends BaseRouteController{
 			modelAndView.addObject("isElevatedUser", true);
 		}
 		try {
-			Product productFound = this.productQuery.setProductId(productId).execute();
+			this.productQuery.setProductId(productId).execute();
 			modelAndView.addObject(
 				ViewModelNames.PRODUCT.getValue(),
 				this.productQuery.setProductId(productId).execute());

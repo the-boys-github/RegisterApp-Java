@@ -21,23 +21,24 @@ function saveActionClick(event) {
 		id: employeeId,
 		firstName: getFirstName(),
 		lastName: getLastName(),
-		password: getPassword()
+		password: getPassword(),
+		type: getEmployeeType()
 	};
 
-	if (productIdIsDefined) {
-		ajaxPatch(saveActionUrl, saveProductRequest, (callbackResponse) => {
+	if (employeeIdIsDefined) {
+		ajaxPatch(saveActionUrl, saveEmployeeRequest, (callbackResponse) => {
 			saveActionElement.disabled = false;
 
 			if (isSuccessResponse(callbackResponse)) {
-				displayProductSavedAlertModal();
+				displayEmployeeSavedAlertModal();
 			}
 		});
 	} else {
-		ajaxPost(saveActionUrl, saveProductRequest, (callbackResponse) => {
+		ajaxPost(saveActionUrl, saveEmployeeRequest, (callbackResponse) => {
 			saveActionElement.disabled = false;
 
 			if (isSuccessResponse(callbackResponse)) {
-				displayProductSavedAlertModal();
+				displayEmployeeSavedAlertModal();
 
 				if ((callbackResponse.data != null) && (callbackResponse.data.id != null) && (callbackResponse.data.id.trim() !== "")) {
 					document.getElementById("employeeEmployeeId").classList.remove("hidden");

@@ -34,7 +34,6 @@ public class SignInRouteController extends BaseRouteController {
 		}
 		return new ModelAndView(ViewNames.SIGN_IN.getViewName());
 	}
-
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView performSignIn(
 		EmployeeSignIn employeeSignIn,
