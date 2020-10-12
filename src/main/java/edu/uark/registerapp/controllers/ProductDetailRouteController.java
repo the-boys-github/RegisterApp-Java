@@ -23,12 +23,20 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value = "/productDetail")
 public class ProductDetailRouteController extends BaseRouteController{
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView start() {
-		System.out.println("base route product detail");
-		return (new ModelAndView(ViewNames.PRODUCT_DETAIL.getViewName()))
-			.addObject(
+	public ModelAndView start(final HttpServletRequest request) {
+		ModelAndView modelandView = new ModelAndView(ViewNames.PRODUCT_DETAIL.getViewName());
+		modelandView.addObject(
 				ViewModelNames.PRODUCT.getValue(),
 				(new Product()).setLookupCode(StringUtils.EMPTY).setCount(0));
+		Optional<ActiveUserEntity> currentUser = this.getCurrentUser(request);
+		if(!currentUser.isPresent() || !this.isElevatedUser(currentUser.get())){
+			modelandView.addObject("isElevatedUser", false);
+		}
+		else{
+			modelandView.addObject("isElevatedUser", true);
+		}
+
+		return modelandView;
 	}
 
 	@RequestMapping(value = "/{productId}", method = RequestMethod.GET)
@@ -36,15 +44,15 @@ public class ProductDetailRouteController extends BaseRouteController{
 		final ModelAndView modelAndView =
 			new ModelAndView(ViewNames.PRODUCT_DETAIL.getViewName());
 
+		Optional<ActiveUserEntity> currentUser = this.getCurrentUser(request);
+		if(!currentUser.isPresent() || !this.isElevatedUser(currentUser.get())){
+			modelAndView.addObject("isElevatedUser", false);
+		}
+		else{
+			modelAndView.addObject("isElevatedUser", true);
+		}
 		try {
 			Product productFound = this.productQuery.setProductId(productId).execute();
-			Optional<ActiveUserEntity> currentUser = this.getCurrentUser(request);
-			if(!currentUser.isPresent() || !this.isElevatedUser(currentUser.get())){
-				modelAndView.addObject("isElevatedUser", false);
-			}
-			else{
-				modelAndView.addObject("isElevatedUser", true);
-			}
 			modelAndView.addObject(
 				ViewModelNames.PRODUCT.getValue(),
 				this.productQuery.setProductId(productId).execute());
