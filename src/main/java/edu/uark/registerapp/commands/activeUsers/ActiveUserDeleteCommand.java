@@ -23,7 +23,8 @@ public class ActiveUserDeleteCommand implements VoidCommandInterface {
 
 		final Optional<ActiveUserEntity> activeUserEntity =
 			this.activeUserRepository.findBySessionKey(this.sessionKey);
-		validateProperties(activeUserEntity);
+
+			
 		if (!activeUserEntity.isPresent()) { // No record with the associated record ID exists in the database.
 			throw new NotFoundException("Active User");
 		}
@@ -31,13 +32,6 @@ public class ActiveUserDeleteCommand implements VoidCommandInterface {
 		this.activeUserRepository.delete(activeUserEntity.get());
 	}
 
-
-    private void validateProperties(final Optional<ActiveUserEntity> activeUserEntity) {
-
-		if (StringUtils.isBlank(activeUserEntity.get().getName())) {
-			throw new UnprocessableEntityException("name");
-        }
-	}
 
 
     // Properties

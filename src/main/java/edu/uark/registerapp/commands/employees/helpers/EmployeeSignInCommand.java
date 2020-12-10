@@ -3,15 +3,15 @@ package edu.uark.registerapp.commands.employees.helpers;
 import java.util.Arrays;
 import java.util.Optional;
 
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.uark.registerapp.commands.VoidCommandInterface;
+import edu.uark.registerapp.commands.ResultCommandInterface;
 import edu.uark.registerapp.commands.exceptions.NotFoundException;
 import edu.uark.registerapp.commands.exceptions.UnauthorizedException;
 import edu.uark.registerapp.commands.exceptions.UnprocessableEntityException;
+import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
 import edu.uark.registerapp.models.entities.ActiveUserEntity;
 import edu.uark.registerapp.models.repositories.ActiveUserRepository;
@@ -21,56 +21,69 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public class EmployeeSignInCommand implements VoidCommandInterface {
+public class EmployeeSignInCommand implements ResultCommandInterface<Employee> {
 	@Override
-	public void execute() {
+	public Employee execute() {
 		this.validateProperties();
         
 
-        Optional<EmployeeEntity> employeeEntity =
-        this.employeeRepository.findByEmployeeId(Integer.valueOf(employeeSignIn.getEmployeeId()));
-        byte[] pass = this.employeeSignIn.getPassword().getBytes();
-        if (employeeEntity.isPresent()) {
-            byte[] dataPass = employeeEntity.get().getPassword();
-            if(!Arrays.equals(dataPass, pass))
-                throw new UnauthorizedException();
-		} else {
-			throw new NotFoundException("Employee");
-        }
-
-        this.createActiveUserEntity(employeeEntity);
+        return new Employee(this.SignInEmployee());
         
     }
     
-    @Transactional
-	private ActiveUserEntity createActiveUserEntity(Optional<EmployeeEntity> employeeEntity) {
-	    System.out.println(employeeEntity.get());
-        Optional<ActiveUserEntity> queriedActiveUserEntity =
-        this.activeUserRepository
-            .findByEmployeeId(employeeEntity.get().getId());
+	@Transactional
+	private EmployeeEntity SignInEmployee() {
+		final Optional<EmployeeEntity> employeeEntity =
+			this.employeeRepository.findByEmployeeId(
+				Integer.parseInt(this.employeeSignIn.getEmployeeId()));
 
-		if (queriedActiveUserEntity.isPresent()) {
-            queriedActiveUserEntity.get().setSessionKey(this.getSessionKey());
-            return this.activeUserRepository.save(queriedActiveUserEntity.get());
-        } else {
-            return this.activeUserRepository.save(new ActiveUserEntity()
-                                                    .setClassification(employeeEntity.get().getClassification())
-                                                    .setName(employeeEntity.get().getFirstName() + " " + employeeEntity.get().getLastName())
-                                                    .setEmployeeId((employeeEntity.get().getId()))
-                                                    .setSessionKey(this.getSessionKey())
-                                                    );
-        }
-	}
+		if (!employeeEntity.isPresent()
+			|| !Arrays.equals(
+				employeeEntity.get().getPassword(),
+				EmployeeHelper.hashPassword(this.employeeSignIn.getPassword()))
+		) {
+
+			throw new UnauthorizedException();
+		}
+
+		final Optional<ActiveUserEntity> activeUserEntity =
+			this.activeUserRepository
+				.findByEmployeeId(employeeEntity.get().getId());
+
+		if (!activeUserEntity.isPresent()) {
+			this.activeUserRepository.save(
+					(new ActiveUserEntity())
+						.setSessionKey(this.sessionKey)
+						.setEmployeeId(employeeEntity.get().getId())
+						.setClassification(
+							employeeEntity.get().getClassification())
+						.setName(
+							employeeEntity.get().getFirstName()
+								.concat(" ")
+								.concat(employeeEntity.get().getLastName())));
+		} else {
+			this.activeUserRepository.save(
+				activeUserEntity.get().setSessionKey(this.sessionKey));
+		}
+
+        return employeeEntity.get();
+        
+    }
 
 
     //Helper method
     private void validateProperties() {
-		if (StringUtils.isBlank(this.employeeSignIn.getEmployeeId()) || !StringUtils.isNumeric(this.employeeSignIn.getEmployeeId())) {
-			throw new UnprocessableEntityException("employeeID");
-        }
-        if (StringUtils.isBlank(this.employeeSignIn.getPassword())) {
-            throw new UnprocessableEntityException("password");
-        }
+		if (StringUtils.isBlank(this.employeeSignIn.getEmployeeId())) {
+			throw new UnprocessableEntityException("employee ID");
+		}
+		try {
+			Integer.parseInt(this.employeeSignIn.getEmployeeId());
+		} catch (final NumberFormatException e) {
+			throw new UnprocessableEntityException("employee ID");
+		}
+		if (StringUtils.isBlank(this.employeeSignIn.getPassword())) {
+			throw new UnprocessableEntityException("password");
+		}
     }
     
     

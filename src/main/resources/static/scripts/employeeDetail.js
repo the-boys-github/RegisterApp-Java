@@ -106,6 +106,8 @@ function validateSave() {
 		return false;
 	}
 
+	return true;
+
 }
 
 function displayEmployeeSavedAlertModal() {
